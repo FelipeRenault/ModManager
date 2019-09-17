@@ -20,6 +20,8 @@ import unicodedata
 import time
 start = time.time()
 
+#test
+
 current_path = os.path.dirname(os.path.realpath(__file__))
 uifile = os.path.join(current_path,"ui\ModManager.ui")
 #print(ConfigObj(os.path.join(current_path, "MMSettings.ini")))
