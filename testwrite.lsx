@@ -1,0 +1,10 @@
+<node id="Module">
+  <attribute id="UUID" value="testuuid" type="22"/>
+</node>
+<node id="ModuleShortDesc">
+  <attribute id="Folder" value="testfolder" type="30"/>
+  <attribute id="MD5" value="testmd5" type="23"/>
+  <attribute id="Name" value="testname" type="22"/>
+  <attribute id="UUID" value="testuuid" type="22"/>
+  <attribute id="Version" value="testver" type="4"/>
+</node>
