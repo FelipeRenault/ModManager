@@ -1,0 +1,27 @@
+purging/func.py
+purging/functions.py
+purging/MMSettings.ini
+purging/modman.py.bak
+purging/template2.xml
+purging/test.py
+purging/testshit.xml
+purging/testfn.py
+userdata/CLOD/test.xml
+userdata/CLOD/test stuff.xml
+userdata/CLOD/test empty.xml
+ui/ModManager.ui.bak
+testing/template3.xml
+testing/template2.xml
+testing/parser2.py
+testing/modsettings_writer_finished.py
+testing/modsettings_writer_finished copy.py
+testing/
+purging/tools/dbg-build.zip
+func.py
+runner.py
+testmultithreading.py
+ui/ModManager.ui
+tools/dbg-build.zip
+testing/parser2.py
+testing/modsettings_writer_finished.py
+testwrite.xml

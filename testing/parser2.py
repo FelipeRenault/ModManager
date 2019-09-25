@@ -97,7 +97,7 @@ def new_module(uuid):
 
     uuid = str(uuid)
 
-    module = et.SubElement(ModOrder, "node")
+    module = et.SubElement("ModOrder", "node")
     module.set("id", "Module")
 
     attribute_uuid = et.SubElement(module, "attribute")
@@ -163,6 +163,7 @@ def writer():
     f.write(t1)
     f.write(t2)
 
+writer()
 
 
 

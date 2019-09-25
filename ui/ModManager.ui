@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1070</width>
-    <height>775</height>
+    <height>820</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1070</width>
-    <height>750</height>
+    <height>800</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
    <property name="maximumSize">
     <size>
      <width>1280</width>
-     <height>720</height>
+     <height>800</height>
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0">
@@ -42,6 +42,19 @@
     <property name="leftMargin">
      <number>11</number>
     </property>
+    <item row="8" column="1">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
     <item row="6" column="1" colspan="3">
      <spacer name="horizontalSpacer">
       <property name="orientation">
@@ -54,6 +67,599 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="9" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QPushButton" name="button_Launch">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Launch</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="7" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <widget class="QTabWidget" name="Welcome">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Test&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Starting page</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_LO">
+         <attribute name="title">
+          <string>Load Order</string>
+         </attribute>
+         <widget class="QWidget" name="horizontalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1021</width>
+            <height>401</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>15</number>
+           </property>
+           <property name="leftMargin">
+            <number>15</number>
+           </property>
+           <property name="topMargin">
+            <number>15</number>
+           </property>
+           <property name="rightMargin">
+            <number>15</number>
+           </property>
+           <property name="bottomMargin">
+            <number>15</number>
+           </property>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QToolBox" name="toolBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>175</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>500</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <widget class="QWidget" name="LoadOrder">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>175</width>
+                  <height>276</height>
+                 </rect>
+                </property>
+                <attribute name="label">
+                 <string>Load Order</string>
+                </attribute>
+                <widget class="QWidget" name="verticalLayoutWidget_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>177</width>
+                   <height>311</height>
+                  </rect>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_4">
+                  <property name="spacing">
+                   <number>7</number>
+                  </property>
+                  <property name="sizeConstraint">
+                   <enum>QLayout::SetDefaultConstraint</enum>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_ActiveProfile_2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Custom LO:</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="combo_customlo">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>165</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="baseSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_4">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnCreateLO">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Create new LO</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnDeleteLO">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Delete selected LO</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="saveToLO">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Save changes to LO</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="button_EnableDisableMods">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Enable / Disable</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnAddGroup">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Add group</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+               <widget class="QWidget" name="Tools">
+                <attribute name="label">
+                 <string>Tools</string>
+                </attribute>
+                <widget class="QWidget" name="verticalLayoutWidget">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>-10</y>
+                   <width>181</width>
+                   <height>281</height>
+                  </rect>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout">
+                  <item>
+                   <widget class="QPushButton" name="btnMoveWorkshopFiles">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Move workshop files</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+               <widget class="QWidget" name="Links">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>175</width>
+                  <height>276</height>
+                 </rect>
+                </property>
+                <attribute name="label">
+                 <string>Useful Links</string>
+                </attribute>
+                <widget class="QWidget" name="verticalLayoutWidget_6">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>10</y>
+                   <width>167</width>
+                   <height>233</height>
+                  </rect>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                  <property name="sizeConstraint">
+                   <enum>QLayout::SetDefaultConstraint</enum>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="label_Links">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Links:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnOpenFolderMods">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>165</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Open Mods Folder</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnOpenWorkshopFolder">
+                    <property name="text">
+                     <string>Open Workshop Folder</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnOpenGameFolder">
+                    <property name="text">
+                     <string>Open game folder</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="button_SteamWorkshop">
+                    <property name="text">
+                     <string>Workshop</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="button_SteamCollections">
+                    <property name="text">
+                     <string>Collections</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="button_Nexus">
+                    <property name="text">
+                     <string>Nexus</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QTreeWidget" name="treeFinalView">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+             </property>
+             <property name="dragEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::DragDrop</enum>
+             </property>
+             <property name="defaultDropAction">
+              <enum>Qt::MoveAction</enum>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
+             <property name="indentation">
+              <number>0</number>
+             </property>
+             <property name="uniformRowHeights">
+              <bool>true</bool>
+             </property>
+             <property name="sortingEnabled">
+              <bool>false</bool>
+             </property>
+             <property name="allColumnsShowFocus">
+              <bool>true</bool>
+             </property>
+             <attribute name="headerVisible">
+              <bool>false</bool>
+             </attribute>
+             <attribute name="headerCascadingSectionResizes">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="headerDefaultSectionSize">
+              <number>25</number>
+             </attribute>
+             <attribute name="headerHighlightSections">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="headerMinimumSectionSize">
+              <number>15</number>
+             </attribute>
+             <attribute name="headerStretchLastSection">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>E</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Author</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Version</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>UUID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Folder</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Container</string>
+              </property>
+             </column>
+             <item>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="checkState">
+               <enum>Checked</enum>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QProgressBar" name="progressBar">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>400</y>
+            <width>1021</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="value">
+           <number>24</number>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item row="0" column="1" rowspan="4" colspan="2">
      <layout class="QGridLayout" name="gridLayout_4">
@@ -72,14 +678,15 @@
       <property name="bottomMargin">
        <number>5</number>
       </property>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_A">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="0" column="2" alignment="Qt::AlignRight">
+       <widget class="QToolButton" name="button_UserFolder">
+        <property name="text">
+         <string>...</string>
         </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_UserFolder">
         <property name="font">
          <font>
           <pointsize>14</pointsize>
@@ -88,7 +695,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Mode:</string>
+         <string>Larian Folder:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -125,37 +732,47 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="comboBox_Profiles">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_A">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>30</height>
-         </size>
+        <property name="text">
+         <string>Mode:</string>
         </property>
-        <property name="sizeIncrement">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
-        <property name="editable">
-         <bool>false</bool>
+       </widget>
+      </item>
+      <item row="1" column="2" alignment="Qt::AlignRight">
+       <widget class="QToolButton" name="button_GameFolder">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_GameFolder">
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Game Folder:</string>
         </property>
        </widget>
       </item>
@@ -191,10 +808,26 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QToolButton" name="button_GameFolder">
+      <item row="3" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <widget class="QLabel" name="label_ActiveProfile">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>...</string>
+         <string>Active profile:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -221,1340 +854,41 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="3" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-       <widget class="QLabel" name="label_ActiveProfile">
+      <item row="3" column="1">
+       <widget class="QComboBox" name="comboBox_Profiles">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
         </property>
-        <property name="text">
-         <string>Active profile:</string>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>30</height>
+         </size>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_UserFolder">
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Larian Folder:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_GameFolder">
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Game Folder:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="button_UserFolder">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="7" column="1">
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <property name="topMargin">
-       <number>10</number>
-      </property>
-      <item>
-       <widget class="QTabWidget" name="tab_Main">
-        <property name="enabled">
+        <property name="editable">
          <bool>false</bool>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Test&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <widget class="QWidget" name="tab_LO">
-         <attribute name="title">
-          <string>Load Order</string>
-         </attribute>
-         <widget class="QLabel" name="label_ModManagement">
-          <property name="geometry">
-           <rect>
-            <x>870</x>
-            <y>10</y>
-            <width>179</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Mod Management:</string>
-          </property>
-         </widget>
-         <widget class="QWidget" name="verticalLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>860</x>
-            <y>140</y>
-            <width>52</width>
-            <height>80</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QPushButton" name="button_UP">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>▲</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_DOWN">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>▼</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="verticalLayoutWidget_5">
-          <property name="geometry">
-           <rect>
-            <x>930</x>
-            <y>110</y>
-            <width>97</width>
-            <height>135</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <widget class="QPushButton" name="button_ENABLE">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>115</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Enable/Disable</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_UNDO">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>115</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Undo Last</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_AutoOrder">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>115</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Auto order</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_DelteMod">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>115</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Delete mod file</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QLabel" name="label_LO">
-          <property name="geometry">
-           <rect>
-            <x>540</x>
-            <y>10</y>
-            <width>121</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Load Order:</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_DisabledMods">
-          <property name="geometry">
-           <rect>
-            <x>180</x>
-            <y>10</y>
-            <width>179</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Installed Mods</string>
-          </property>
-         </widget>
-         <widget class="QTreeWidget" name="tree_LoadOrder">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>540</x>
-            <y>40</y>
-            <width>311</width>
-            <height>351</height>
-           </rect>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>9999</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustIgnored</enum>
-          </property>
-          <property name="showDropIndicator" stdset="0">
-           <bool>true</bool>
-          </property>
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragDrop</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::MoveAction</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-          <property name="indentation">
-           <number>0</number>
-          </property>
-          <property name="itemsExpandable">
-           <bool>false</bool>
-          </property>
-          <property name="allColumnsShowFocus">
-           <bool>true</bool>
-          </property>
-          <property name="expandsOnDoubleClick">
-           <bool>false</bool>
-          </property>
-          <attribute name="headerCascadingSectionResizes">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="headerDefaultSectionSize">
-           <number>25</number>
-          </attribute>
-          <attribute name="headerMinimumSectionSize">
-           <number>25</number>
-          </attribute>
-          <attribute name="headerStretchLastSection">
-           <bool>true</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string>Mod Name</string>
-           </property>
-          </column>
-          <item>
-           <property name="text">
-            <string>Boop</string>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-           </property>
-          </item>
-         </widget>
-         <widget class="QListWidget" name="list_InstalledMods">
-          <property name="geometry">
-           <rect>
-            <x>160</x>
-            <y>40</y>
-            <width>321</width>
-            <height>341</height>
-           </rect>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragDrop</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::MoveAction</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-          <property name="movement">
-           <enum>QListView::Snap</enum>
-          </property>
-          <item>
-           <property name="text">
-            <string>New Item</string>
-           </property>
-          </item>
-         </widget>
-         <widget class="QCheckBox" name="checkbox_HideDisabled">
-          <property name="geometry">
-           <rect>
-            <x>40</x>
-            <y>80</y>
-            <width>111</width>
-            <height>20</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Hide Disabled</string>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="LO2">
-         <attribute name="title">
-          <string>LO2</string>
-         </attribute>
-         <widget class="QWidget" name="horizontalLayoutWidget_2">
-          <property name="geometry">
-           <rect>
-            <x>-1</x>
-            <y>0</y>
-            <width>791</width>
-            <height>391</height>
-           </rect>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <property name="topMargin">
-            <number>10</number>
-           </property>
-           <property name="rightMargin">
-            <number>10</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <widget class="QToolBox" name="toolBox">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>500</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="QWidget" name="LoadOrder">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>150</width>
-                <height>309</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Load Order</string>
-              </attribute>
-              <widget class="QWidget" name="verticalLayoutWidget_3">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>141</width>
-                 <height>311</height>
-                </rect>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_4">
-                <property name="spacing">
-                 <number>7</number>
-                </property>
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetDefaultConstraint</enum>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QComboBox" name="combox_LoadOrderList">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="baseSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>Custom LO 1</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Custom LO 2</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_4">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_EnableDisableMods">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Enable/Disable Mods</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_CreateLO">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Create new LO</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_DeleteLO">
-                  <property name="text">
-                   <string>Delete selected LO</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_SaveLO">
-                  <property name="text">
-                   <string>Save changes to LO</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="page_2">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>150</width>
-                <height>309</height>
-               </rect>
-              </property>
-              <attribute name="label">
-               <string>Useful Links</string>
-              </attribute>
-              <widget class="QWidget" name="verticalLayoutWidget_6">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>10</y>
-                 <width>141</width>
-                 <height>191</height>
-                </rect>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_7">
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetDefaultConstraint</enum>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label_Links">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Links:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_OpenFolder">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Open LO folder</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_SteamWorkshop">
-                  <property name="text">
-                   <string>Workshop</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_SteamCollections">
-                  <property name="text">
-                   <string>Collections</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="button_Nexus">
-                  <property name="text">
-                   <string>Nexus</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </widget>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="table_InstalledMods_2">
-             <property name="acceptDrops">
-              <bool>false</bool>
-             </property>
-             <property name="autoScroll">
-              <bool>true</bool>
-             </property>
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="tabKeyNavigation">
-              <bool>false</bool>
-             </property>
-             <property name="showDropIndicator" stdset="0">
-              <bool>true</bool>
-             </property>
-             <property name="dragEnabled">
-              <bool>true</bool>
-             </property>
-             <property name="dragDropOverwriteMode">
-              <bool>false</bool>
-             </property>
-             <property name="dragDropMode">
-              <enum>QAbstractItemView::InternalMove</enum>
-             </property>
-             <property name="defaultDropAction">
-              <enum>Qt::MoveAction</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::ExtendedSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <property name="showGrid">
-              <bool>false</bool>
-             </property>
-             <property name="gridStyle">
-              <enum>Qt::DashLine</enum>
-             </property>
-             <property name="sortingEnabled">
-              <bool>true</bool>
-             </property>
-             <property name="wordWrap">
-              <bool>false</bool>
-             </property>
-             <property name="cornerButtonEnabled">
-              <bool>false</bool>
-             </property>
-             <attribute name="horizontalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="horizontalHeaderCascadingSectionResizes">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>20</number>
-             </attribute>
-             <attribute name="horizontalHeaderHighlightSections">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="horizontalHeaderMinimumSectionSize">
-              <number>20</number>
-             </attribute>
-             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="horizontalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderVisible">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="verticalHeaderCascadingSectionResizes">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="verticalHeaderDefaultSectionSize">
-              <number>30</number>
-             </attribute>
-             <attribute name="verticalHeaderMinimumSectionSize">
-              <number>20</number>
-             </attribute>
-             <row>
-              <property name="text">
-               <string notr="true"/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string notr="true"/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string notr="true"/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string/>
-              </property>
-             </row>
-             <column>
-              <property name="text">
-               <string>Mod Name</string>
-              </property>
-              <property name="textAlignment">
-               <set>AlignLeading|AlignTop</set>
-              </property>
-             </column>
-             <item row="0" column="0">
-              <property name="text">
-               <string notr="true">Test 1</string>
-              </property>
-              <property name="font">
-               <font>
-                <kerning>true</kerning>
-               </font>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="1" column="0">
-              <property name="text">
-               <string>Test2</string>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="2" column="0">
-              <property name="text">
-               <string>Test 3</string>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="3" column="0">
-              <property name="text">
-               <string>asdqweasd</string>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="4" column="0">
-              <property name="text">
-               <string>wasdawe1</string>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="5" column="0">
-              <property name="text">
-               <string>123asdawe</string>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsEnabled</set>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="tableWidget">
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="dragDropMode">
-              <enum>QAbstractItemView::DragDrop</enum>
-             </property>
-             <property name="defaultDropAction">
-              <enum>Qt::MoveAction</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <property name="showGrid">
-              <bool>false</bool>
-             </property>
-             <property name="gridStyle">
-              <enum>Qt::NoPen</enum>
-             </property>
-             <property name="wordWrap">
-              <bool>false</bool>
-             </property>
-             <property name="cornerButtonEnabled">
-              <bool>false</bool>
-             </property>
-             <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>40</number>
-             </attribute>
-             <attribute name="horizontalHeaderHighlightSections">
-              <bool>false</bool>
-             </attribute>
-             <attribute name="horizontalHeaderMinimumSectionSize">
-              <number>40</number>
-             </attribute>
-             <attribute name="horizontalHeaderStretchLastSection">
-              <bool>true</bool>
-             </attribute>
-             <attribute name="verticalHeaderDefaultSectionSize">
-              <number>30</number>
-             </attribute>
-             <attribute name="verticalHeaderHighlightSections">
-              <bool>false</bool>
-             </attribute>
-             <row>
-              <property name="text">
-               <string>1</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>2</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>3</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>4</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>5</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>6</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>7</string>
-              </property>
-             </row>
-             <row>
-              <property name="text">
-               <string>8</string>
-              </property>
-             </row>
-             <column>
-              <property name="text">
-               <string>Names</string>
-              </property>
-             </column>
-             <item row="0" column="0">
-              <property name="text">
-               <string>1</string>
-              </property>
-              <property name="font">
-               <font>
-                <stylestrategy>PreferAntialias</stylestrategy>
-               </font>
-              </property>
-              <property name="flags">
-               <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsEnabled</set>
-              </property>
-             </item>
-             <item row="1" column="0">
-              <property name="text">
-               <string>2</string>
-              </property>
-             </item>
-             <item row="2" column="0">
-              <property name="text">
-               <string>3</string>
-              </property>
-             </item>
-             <item row="3" column="0">
-              <property name="text">
-               <string>4</string>
-              </property>
-             </item>
-             <item row="4" column="0">
-              <property name="text">
-               <string>5</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <widget class="QListWidget" name="listWidget">
-             <property name="dragDropMode">
-              <enum>QAbstractItemView::DragDrop</enum>
-             </property>
-             <property name="defaultDropAction">
-              <enum>Qt::MoveAction</enum>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::ExtendedSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectItems</enum>
-             </property>
-             <property name="movement">
-              <enum>QListView::Snap</enum>
-             </property>
-             <property name="uniformItemSizes">
-              <bool>true</bool>
-             </property>
-             <property name="selectionRectVisible">
-              <bool>true</bool>
-             </property>
-             <item>
-              <property name="text">
-               <string>1. </string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>2. </string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>3. </string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>4. </string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="tab">
-         <attribute name="title">
-          <string>Page</string>
-         </attribute>
-         <widget class="QTableWidget" name="tableWidget_2">
-          <property name="geometry">
-           <rect>
-            <x>150</x>
-            <y>20</y>
-            <width>731</width>
-            <height>341</height>
-           </rect>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragDrop</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::MoveAction</enum>
-          </property>
-          <property name="alternatingRowColors">
-           <bool>true</bool>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
-          </property>
-          <property name="selectionBehavior">
-           <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <property name="sortingEnabled">
-           <bool>false</bool>
-          </property>
-          <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-           <bool>true</bool>
-          </attribute>
-          <row>
-           <property name="text">
-            <string>R1</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>R2</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>R3</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>R4</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>R5</string>
-           </property>
-          </row>
-          <column>
-           <property name="text">
-            <string>C1</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>C2</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>C3</string>
-           </property>
-          </column>
-          <item row="0" column="0">
-           <property name="text">
-            <string>1</string>
-           </property>
-          </item>
-          <item row="0" column="1">
-           <property name="text">
-            <string>A</string>
-           </property>
-          </item>
-          <item row="1" column="0">
-           <property name="text">
-            <string>2</string>
-           </property>
-          </item>
-          <item row="1" column="1">
-           <property name="text">
-            <string>B</string>
-           </property>
-          </item>
-          <item row="2" column="0">
-           <property name="text">
-            <string>3</string>
-           </property>
-          </item>
-          <item row="2" column="1">
-           <property name="text">
-            <string>C</string>
-           </property>
-          </item>
-          <item row="3" column="0">
-           <property name="text">
-            <string>4</string>
-           </property>
-          </item>
-          <item row="3" column="1">
-           <property name="text">
-            <string>D</string>
-           </property>
-          </item>
-          <item row="4" column="0">
-           <property name="text">
-            <string>5</string>
-           </property>
-          </item>
-          <item row="4" column="1">
-           <property name="text">
-            <string>E</string>
-           </property>
-          </item>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="tab_test">
-         <attribute name="title">
-          <string>Page</string>
-         </attribute>
-         <widget class="QWidget" name="horizontalLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>29</x>
-            <y>29</y>
-            <width>981</width>
-            <height>351</height>
-           </rect>
-          </property>
-          <layout class="QHBoxLayout" name="testLayout"/>
-         </widget>
-        </widget>
        </widget>
       </item>
      </layout>
-    </item>
-    <item row="9" column="1">
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QPushButton" name="button_Launch">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Launch</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="8" column="1">
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>

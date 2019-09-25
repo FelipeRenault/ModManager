@@ -1,18 +1,29 @@
 # Completed functions go here
+import sys
 import os
 import lz4.block
 from struct import *
 import unicodedata
 from lxml import etree as et
-import bs4 as bs
+from lxml import objectify
+from bs4 import BeautifulSoup
 import time
+from io import BytesIO
 start = time.time()
-
-###########################
-# Pak parsing
-###########################
+import xml.etree.ElementTree as ET
 
 a1 = "c:/Users/Rykari/Documents/Larian Studios/Divinity Original Sin 2 Definitive Edition/Mods/"
+current_path = os.path.dirname(os.path.realpath(__file__))
+template_file = os.path.join(current_path,"template.xml")
+test_file = os.path.join(current_path,"testwrite.xml")
+lar_folder = os.path.join(os.environ['USERPROFILE'], "Documents\Larian Studios")
+path_mods = os.path.join(lar_folder, "Divinity Original Sin 2 Definitive Edition\Mods")
+
+current_path = os.path.dirname(os.path.realpath(__file__))
+template_file = os.path.join(current_path,"template.xml")
+
+tree = et.parse(template_file)
+root = tree.getroot()
 
 def parse_pak(fullpath):
     ''' Info:
@@ -137,14 +148,15 @@ def mods_dictionary(path):
     ))
     return l1, l2
 
+# Works:
+#ModOrderTree = tree.findall('//node[@id="ModOrder"]')[0]
+#ModOrder = ModOrderTree.find('children')
 
-info = mods_dictionary(a1)
-data_list = info[0]
-error_list = info[1]
 
 ###########################
 # Element generators
 ###########################
+
 
 # Create a Module element as object:
 def new_module(uuid):
@@ -154,7 +166,11 @@ def new_module(uuid):
             <attribute id="UUID" value="627f624f-e2b8-4b37-977e-03044e500fec" type="22" />
         </node>
     '''
+    # ModOrderTree = element tree object @ <node id="Module">
+    ModOrderTree = root.xpath('.//node[@id="ModOrder"]')[0]
 
+    # ModOrder = element tree object @ <children>
+    ModOrder = ModOrderTree.find('children')
     uuid = str(uuid)
 
     module = et.SubElement(ModOrder, "node")
@@ -164,10 +180,11 @@ def new_module(uuid):
     attribute_uuid.set("id", "UUID")
     attribute_uuid.set("value", uuid)
     attribute_uuid.set("type", "22")
+
     return module
 
 # Create a ModuleShortDesc element as object:
-def new_moduleshortdesc(folder,md5,name,uuid,version):
+def new_moduleshortdesc(name, author, version, uuid, folder):
     ''' Example:
 
         <node id="ModuleShortDesc">
@@ -178,6 +195,10 @@ def new_moduleshortdesc(folder,md5,name,uuid,version):
             <attribute id="Version" value="371202020" type="4" />
         </node>
     '''
+
+    ModsTree = tree.xpath('//node[@id="Mods"]')[0]
+    Mods = ModsTree.find('children')
+    md5 = ""
 
     folder, md5, name, uuid, version = str(folder), str(md5), str(name), str(uuid), str(version)
 
@@ -211,23 +232,57 @@ def new_moduleshortdesc(folder,md5,name,uuid,version):
 
     return moduleshortdesc
 
-##########################
-# Writer
-###########################
-# for each mod in list, do generator
+# Generator
+def modsettingsWriter():
+    info = mods_dictionary(a1)
+    data_list = info[0]
+    error_list = info[1]
+    installed_list = []
+
+    # Create a tuple containing Name,Author,Version,UUID,Folder
+    for mods in data_list:
+        with io.open('testwrite.lsx','w', encoding='utf-8') as f:
+            order = new_module(mods["UUID"])
+            desc = new_moduleshortdesc(mods["Name"], mods["Author"], mods["Version"], mods["UUID"], mods["Folder"])
+
+
+            t1 = et.tostring(order, encoding="unicode",method="xml",pretty_print=True)
+            t2 = et.tostring(desc, encoding="unicode",pretty_print=True)
+            #   encoding vital as default is bytestring & lxml cannot write() this
+            f.write(t1)
+            f.write(t2)
+            f.close()
+
+            tree.write(test_file)
+
+    f.close()
+
+
+def generator2():
+
+    # mods_dictionary returns 2 lists of dictionaries:
+    info = mods_dictionary(a1)
+
+    # info[0] contains a list of dictionaries.
+    # Each dictionary contains information of each mod pulled from meta.lsx file inside each pak
+    data_list = info[0]
+    # error_list = info[1] # Not needed
 
 
 
+    # For each dictionary inside data_list
+    for mods in data_list:
+        order = new_module(mods["UUID"])
+        desc = new_moduleshortdesc(mods["Name"], mods["Author"], mods["Version"], mods["UUID"], mods["Folder"])
+
+    tree.write(test_file)
 
 
-# Write Module & ModuleShortDesc to file
-def writer():
-    f = open('testwrite.lsx','w')
-    order = new_module("testuuid")
-    desc = new_moduleshortdesc("testfolder", "testmd5", "testname", "testuuid", "testver")
+def writer(file):
+    generator2()
 
-    t1 = et.tostring(order, encoding="unicode",pretty_print=True)
-    t2 = et.tostring(desc, encoding="unicode",pretty_print=True)
-    #encoding vital as default is bytestring & lxml cannot write() this
-    f.write(t1)
-    f.write(t2)
+    parser = et.XMLParser(remove_blank_text=True)
+    tree = et.parse(test_file,parser)
+    tree.write(test_file, encoding='utf-8',pretty_print=True,xml_declaration=True)
+
+writer(test_file)
