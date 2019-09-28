@@ -349,8 +349,6 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
     def fnCreateLO(self):
         text, ok = QtWidgets.QInputDialog.getText(self,'Create custom load order:','Enter Name:')
 
-        self.idiotchecker()
-
         if not ok:
             return
 
@@ -368,22 +366,28 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
                 return QMessageBox.about(self, "Error", "This file already exists, try another name")
 
     def fnDeleteLO(self):
-        try:
-            qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'','Are you sure you want to delete '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-        except AttributeError as e:
-            QMessageBox.about(self, "Error", "Please select a load order")
-            return
+        self.idiotchecker()
+
+        if str(self.combo_customlo.currentText()) != str("--Chose a custom LO--"):
+
+            try:
+                qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'','Are you sure you want to delete '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+            except AttributeError as e:
+                return QMessageBox.about(self, "Error", "Please select a load order")
 
 
-        result = qb.exec_()
+            result = qb.exec_()
 
-        if result == qb.Yes:
-            for file in next(os.walk(os.path.join(current_path,self.dirCLO)))[2]:
-                if file == str(self.selectedLO):
-                    os.remove(os.path.join(current_path,self.dirCLO,self.selectedLO))
-            self.populate_LO()
+            if result == qb.Yes:
+                for file in next(os.walk(os.path.join(current_path,self.dirCLO)))[2]:
+                    if file == str(self.selectedLO):
+                        os.remove(os.path.join(current_path,self.dirCLO,self.selectedLO))
+                return self.populate_LO()
+            else:
+                return False
+
         else:
-            return
+            return False
 
     def fnOpenWorkshopFolder(self):
         path = os.path.realpath(self.workshop_folder)
@@ -401,21 +405,24 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
         self.idiotchecker()
 
         if str(self.combo_customlo.currentText()) != str("--Chose a custom LO--"):
+
             try:
                 qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'','Are you sure you want to update '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
             except AttributeError as e:
                 return QMessageBox.about(self, "Error", "Please select a load order")
 
-        result = qb.exec_()
+            result = qb.exec_()
 
-        if result == qb.No:
-            return
+            if result == qb.No:
+                return False
 
-        if result == qb.Yes:
-            if self.selectedLO != None:
-                return self.modsettingsWriter(os.path.join(current_path, self.dirCLO,self.selectedLO))
+            if result == qb.Yes:
+                if self.selectedLO != None:
+                    return self.modsettingsWriter(os.path.join(current_path, self.dirCLO,self.selectedLO))
+            else:
+                return False
         else:
-            return
+            return False
 
     def fnLaunch(self):
         self.idiotchecker()
