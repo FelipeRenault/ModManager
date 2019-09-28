@@ -5,15 +5,14 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QDropEvent
 from PyQt5.QtWidgets import QTableWidget, QAbstractItemView, QTableWidgetItem, QWidget, QHBoxLayout, QApplication, QListWidget, QMessageBox
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
-from ui import ModManagerUI
 import os
 import subprocess
 from lxml import etree as et
 import lxml.etree
 import lxml.builder
-from configobj import ConfigObj
 from glob import glob
-import os
+from configparser import ConfigParser
+import io
 import bs4 as bs
 import lz4.block
 from struct import *
@@ -48,7 +47,7 @@ uifile = os.path.join(current_path,"ui\ModManager.ui")
 template_file = os.path.join(current_path,"template.xml")
 
 
-class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
+class ModManager(QtWidgets.QMainWindow):
 
     def __init__(self):
         super(ModManager, self).__init__()
@@ -56,7 +55,7 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
         uic.loadUi(uifile, self)
 
         self.setWindowTitle("Divinity: Original Sin 2 Mod Manager")
-
+        self.Welcome.setEnabled(False)
         self._connectSignals()
 
         self.headerchanges()
@@ -64,12 +63,12 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
         self.initialvars()
 
         self.btnPrintSelected_2.setHidden(True)
+        self.btnAddGroup.setHidden(True)
 
-        self.autoInsertLarianFolder()
 
+        self.config('load')
         self.autoInsertGameFolder()
-
-        self.populateIfFound()
+        self.autoInsertLarianFolder()
 
         self.cmdInput.setPlaceholderText(str(self.report))
 
@@ -249,58 +248,36 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
         self.dirCLO = "userdata\CLOD"
         self.busy = False # USED FOR PROCESS MANAGEMENT AKA IMPATIENT RETARD CONTROL
 
-    def autoInsertLarianFolder(self):
-        for dirs in os.listdir(self.lar_folder):
-
-            if 'Divinity Original Sin 2' or 'Divinity Original Sin 2 Definitive Edition' in os.path.isdir(os.path.join(self.lar_folder, dirs)):
-            # If relevant folders are found:
-
-                # Insert the path
-                self.textbox_UserFolder.setText(self.lar_folder)
-
-                # Enable the field
-                self.textbox_UserFolder.setDisabled(False)
-
-                # Set larfolder to be the path in the Larian Folder text box
-                self.larfolder = self.textbox_UserFolder.toPlainText()
-
-                # Set path_profiles
-                self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\PlayerProfiles\\")
-
-                # Set path_mods
-                self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\Mods\\")
-
-                # Since path has been found populate installed mods list:
-                #self.table_TestImport_fn()
-
-                # Changing this to write an item to treeFinalView that has all data needed (name, authour etc)
-
     def autoInsertGameFolder(self):
-        # -- Auto insert best guess at game folder -- #
-        for dirs in os.listdir(self.game_folder):
+        if self.gamefolder==None:
+            for dirs in os.listdir(self.game_folder):
 
-            if 'bin' or 'DefEd' in os.path.isdir(os.path.join(self.game_folder, dirs)):
-            # If we find these folders:
+                if 'bin' or 'DefEd' in os.path.isdir(os.path.join(self.game_folder, dirs)):
+                    self.textbox_GameFolder.setText(self.game_folder)
+                    self.gamefolder = self.textbox_GameFolder.toPlainText()
+                    self.config('save','gamefolder',str(self.textbox_GameFolder.toPlainText()))
+                    self.button_UserFolder.setEnabled(True)
 
-                self.textbox_GameFolder.setText(self.game_folder)
-                # Insert the path into text box
+    def autoInsertLarianFolder(self):
+        if self.larfolder==None:
+            for dirs in os.listdir(self.lar_folder):
 
-                self.textbox_GameFolder.setDisabled(False)
-                # Enable the Text box
+                if 'Divinity Original Sin 2' or 'Divinity Original Sin 2 Definitive Edition' in os.path.isdir(os.path.join(self.lar_folder, dirs)):
 
-                self.gamefolder = self.textbox_GameFolder.toPlainText()
-                # Set gamefolder to be the path in the Game Folder text box
+                    self.textbox_UserFolder.setText(self.lar_folder)
 
-    def populateIfFound(self):
-        if self.gamefolder and self.larfolder:
-            self.data_list = self.mods_dictionary(self.path_mods)[0]
-            if len(self.data_list) != int(0):
-                self.populateInstalledFinal(self.data_list)
-                self.populate_LO()
-                self.radio_Classic.setEnabled(True)
-                self.radio_DE.setEnabled(True)
-            else:
-                return
+                    self.larfolder = self.textbox_UserFolder.toPlainText()
+                    self.config('save','larfolder',str(self.textbox_UserFolder.toPlainText()))
+
+                    self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\PlayerProfiles\\")
+
+                    self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\Mods\\")
+
+                    if not os.path.exists(self.dirCLO):
+                        os.makedirs(self.dirCLO)
+
+                    self.radio_Classic.setEnabled(True)
+                    self.radio_DE.setEnabled(True)
 
     def idiotchecker(self):
         if not self.selectedProfile:
@@ -347,34 +324,45 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
                 current_item.setCheckState(0,0)
 
     def fnCreateLO(self):
-        text, ok = QtWidgets.QInputDialog.getText(self,'Create custom load order:','Enter Name:')
+        text, ok = QtWidgets.QInputDialog.getText(self,'Name','Name your custom LO:')
+
 
         if not ok:
             return
 
         if text == "":
             QMessageBox.about(self, "Error", "Enter a Name")
-            return self.addgroup()
+            return self.fnCreateLO()
 
         if ok:
             if not os.path.isfile(os.path.join(current_path, self.dirCLO,str(text+".xml"))):
                 f = open(os.path.join(current_path, self.dirCLO,str(text+".xml")), "w")
                 f.write("")
                 f.close
-                return self.populate_LO()
+                self.populate_LO()
+                self.combo_customlo.setCurrentText(str(text+".xml"))
+                self.selectedLO = str(text+".xml")
+                self.treeFinalView.setEnabled(True)
+                self.saveToLO.setEnabled(True)
+                self.btnDeleteLO.setEnabled(True)
+                self.button_EnableDisableMods.setEnabled(True)
+                self.config('save','lo_selected',str(self.selectedLO))
+                return True
             else:
-                return QMessageBox.about(self, "Error", "This file already exists, try another name")
+                QMessageBox.about(self, "Error", "This file already exists, try another name")
+                return self.self.fnCreateLO()
 
     def fnDeleteLO(self):
-        self.idiotchecker()
 
-        if str(self.combo_customlo.currentText()) != str("--Chose a custom LO--"):
+        if self.combo_customlo.currentText() != str("--Create a custom LO--") or self.combo_customlo.currentText() != (str("--Chose a custom LO--")):
 
+            # idiotcheck:
             try:
-                qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'','Are you sure you want to delete '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+                qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'Confirmation','Are you sure you want to delete '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
             except AttributeError as e:
-                return QMessageBox.about(self, "Error", "Please select a load order")
-
+                return QMessageBox.about(self, "Error", "Nothing to delete")
+            except TypeError:
+                return QMessageBox.about(self, "Error", "Nothing to delete")
 
             result = qb.exec_()
 
@@ -382,10 +370,36 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
                 for file in next(os.walk(os.path.join(current_path,self.dirCLO)))[2]:
                     if file == str(self.selectedLO):
                         os.remove(os.path.join(current_path,self.dirCLO,self.selectedLO))
+                        self.config('save','lo_selected',str("None"))
                 return self.populate_LO()
             else:
                 return False
 
+        else:
+            return False
+
+    def updateLO(self):
+
+        if self.combo_customlo.currentText() != str("--Create a custom LO--") or self.combo_customlo.currentText() != (str("--Chose a custom LO--")):
+
+            try:
+                qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'','Are you sure you want to update '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+            except AttributeError as e:
+                return QMessageBox.about(self, "Error", "Nothing to save")
+            except TypeError:
+                return QMessageBox.about(self, "Error", "Nothing to save")
+
+            result = qb.exec_()
+
+            if result == qb.No:
+                return False
+
+            if result == qb.Yes:
+                if self.selectedLO != None:
+                    self.modsettingsWriter(os.path.join(current_path, self.dirCLO,self.selectedLO))
+                    return True
+            else:
+                return False
         else:
             return False
 
@@ -401,29 +415,6 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
         path = os.path.realpath(self.gamefolder)
         os.startfile(path)
 
-    def updateLO(self):
-        self.idiotchecker()
-
-        if str(self.combo_customlo.currentText()) != str("--Chose a custom LO--"):
-
-            try:
-                qb = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question,'','Are you sure you want to update '+self.selectedLO+'?', QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
-            except AttributeError as e:
-                return QMessageBox.about(self, "Error", "Please select a load order")
-
-            result = qb.exec_()
-
-            if result == qb.No:
-                return False
-
-            if result == qb.Yes:
-                if self.selectedLO != None:
-                    return self.modsettingsWriter(os.path.join(current_path, self.dirCLO,self.selectedLO))
-            else:
-                return False
-        else:
-            return False
-
     def fnLaunch(self):
         self.idiotchecker()
 
@@ -432,57 +423,156 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
             return os.startfile(self.path_exe)
         else:
             return
-    def select_UserFolder(self):
-        user_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Larian Folder")
-        if user_path:
-            self.textbox_UserFolder.setText(user_path)
-            self.larfolder = user_path
-            self.enable_select_mode()
-        return larfolder
+
+    def config(self,operation,dataname="",data=""):
+        config = ConfigParser()
+
+        def createConfig():
+            config['LastSessionData'] = {'gamefolder': 'None',
+                                        'larfolder': 'None',
+                                        'edition': 'None',
+                                        'profile': 'None',
+                                        'lo_selected': 'None'}
+            with open(os.path.join(current_path,"userdata\config.ini"),'w') as config_file:
+                config.write(config_file)
+                config_file.close()
+
+        if not os.path.isfile(os.path.join(current_path,"userdata\config.ini")):
+            createConfig()
+
+        config.read(os.path.join(current_path,"userdata\config.ini"))
+
+        if operation == 'load':
+            if config['LastSessionData']['gamefolder'] != 'None':
+                self.gamefolder = config['LastSessionData']['gamefolder']
+                self.button_UserFolder.setEnabled(True)
+
+            if config['LastSessionData']['larfolder'] != 'None':
+                self.larfolder = config['LastSessionData']['larfolder']
+                self.radio_DE.setEnabled(True)
+                self.radio_Classic.setEnabled(True)
+
+            if config['LastSessionData']['edition'] != 'None':
+                if config['LastSessionData']['edition'] == 'DE':
+                    self.radio_DE.setChecked(True)
+                    self.select_Mode(self.radio_DE)
+                if config['LastSessionData']['edition'] == 'Classic':
+                    self.radio_Classic.setChecked(True)
+                    self.select_Mode(self.radio_Classic)
+
+            if config['LastSessionData']['profile'] != 'None':
+                self.selectedProfile = config['LastSessionData']['profile']
+                self.comboBox_Profiles.setCurrentText(config['LastSessionData']['profile'])
+                self.getCurrentSelectedProfile()
+
+            if config['LastSessionData']['lo_selected'] != 'None':
+                self.combo_customlo.setCurrentText(config['LastSessionData']['lo_selected'])
+                self.selectedLO = config['LastSessionData']['lo_selected']
+                self.getCLOD()
+
+            return True
+
+        if operation == 'save':
+            config['LastSessionData'][dataname] = data
+            with open(os.path.join(current_path,"userdata\config.ini"),'w') as config_file:
+                config.write(config_file)
+                config_file.close()
+            return True
+        return True
 
     def select_GameFolder(self):
-        game_path = QtWidgets.QFileDialog.getExistingDirectory(
-            self,
-            "Select Game Folder"
-            )
+        game_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Game Folder")
+
         if game_path:
-            self.textbox_GameFolder.setText(game_path)
-            self.gamefolder = game_path
-            self.enable_select_mode()
+
+            temp_list = []
+
+            for dirs in os.listdir(game_path):
+                temp_list.append(dirs)
+
+            if str('bin') in temp_list and str('Classic') in temp_list or str('DefEd') in temp_list:
+                self.textbox_GameFolder.setText(game_path)
+                self.gamefolder = game_path
+                self.config('save','larfolder',str(game_path))
+                self.button_UserFolder.setEnabled(True)
+                return self.gamefolder
+            else:
+                QMessageBox.about(self, "Error", "These are not the folders you're looking for")
+                return self.select_GameFolder()
+
+        if not game_path:
+            return False
+
+    def select_UserFolder(self):
+        user_path = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Larian Folder")
+
+        if user_path:
+
+            temp_list = []
+
+            for dirs in os.listdir(user_path):
+                temp_list.append(dirs)
+
+            # Check if it's the right path:
+            if str('Divinity Original Sin 2 Definitive Edition') in temp_list:
+                self.textbox_UserFolder.setText(user_path)
+                self.larfolder = user_path
+                self.config('save','larfolder',str(user_path))
+                self.radio_DE.setEnabled(True)
+                self.larfolder
+
+            elif str('Divinity Original Sin 2') in temp_list:
+                self.textbox_UserFolder.setText(user_path)
+                self.larfolder = user_path
+                self.config('save','larfolder',str(user_path))
+                self.radio_Classic.setEnabled(True)
+                self.larfolder
+            else:
+                QMessageBox.about(self, "Error", "These are not the folders you're looking for")
+                return self.select_UserFolder()
+
+        if not user_path:
+            return False
+
 
     # DE / Classic radio button handler
     def select_Mode(self,b):
         if b.text() == "DE":
             if b.isChecked() == True:
-                # Set relevant Paths
                 self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\PlayerProfiles\\")
                 self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\Mods\\")
                 self.path_exe = os.path.join(self.gamefolder, "DefEd\\bin\\EoCApp.exe")
 
-                # Set relevant Vars
                 self.profiles = self.lst_profiles(self.path_profiles)
-                # Functions
+                self.data_list = self.mods_dictionary(self.path_mods)[0]
 
                 self.comboBox_Profiles.setEnabled(True)
-
-                # Populate Profiles
                 self.populate_profiles()
-                # Change Launch button accordingly
+                self.populateInstalledFinal(self.data_list)
+                self.populate_LO()
                 self.button_Launch.setText("Launch DE")
+                self.config('save','edition',str("DE"))
 
         if b.text() == "Classic":
-            # Set Clasic Paths
             if b.isChecked() == True:
-                # Call fn that handles DE paths
-                # Ignored for now
+                self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2\\PlayerProfiles\\")
+                self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2\\Mods\\")
+                self.path_exe = os.path.join(self.gamefolder, "Classic\\EoCApp.exe")
 
-                # Change launch button accordingly
+                self.profiles = self.lst_profiles(self.path_profiles)
+                self.data_list = self.mods_dictionary(self.path_mods)[0]
+
+                self.comboBox_Profiles.setEnabled(True)
+                self.populate_profiles()
+                self.populateInstalledFinal(self.data_list)
+                self.populate_LO()
                 self.button_Launch.setText("Launch Classic")
+                self.config('save','edition',str("Classic"))
 
     # Add Group btn fn
     # NOTE: UNFINISHED
     def addgroup(self):
-        text, ok = QtWidgets.QInputDialog.getText(self,'Create grouping:','Enter name for grouping:')
+        text, ok = QtWidgets.QInputDialog.getText(self,'Name','Enter name for grouping:')
 
         try:
             base = self.treeFinalView.findItems(str(text),Qt.MatchExactly,1)[0]
@@ -516,40 +606,61 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
     def getCurrentSelectedProfile(self):
         if str(self.comboBox_Profiles.currentText()) != str("--Chose a Profile--"):
             self.selectedProfile = str(self.comboBox_Profiles.currentText())
-            print("Currently Selected Profile is " + self.selectedProfile)
-            self.combo_customlo.setEnabled(True)
+            self.Welcome.setEnabled(True)
             self.toolBox.setEnabled(True)
-
+            self.config('save','profile',str(self.selectedProfile))
+            print("Currently Selected Profile is " + self.selectedProfile)
         else:
-            self.selectedProfile = None
-
+            self.Welcome.setEnabled(False)
+            self.toolBox.setEnabled(False)
+            self.config('save','profile',str("None"))
 
 # ========================= COMBO BOX FUNCTIONS
     # Save the name of the currently selected LO to self.selectedLO
     def getCLOD(self):
         # init error handling:
+        if self.combo_customlo.currentText() == str("--Create a custom LO--") or self.combo_customlo.currentText() == (str("--Chose a custom LO--")):
+            self.selectedLO = None
+            self.treeFinalView.setEnabled(False)
+            self.saveToLO.setEnabled(False)
+            self.btnDeleteLO.setEnabled(False)
+            self.button_EnableDisableMods.setEnabled(False)
+        else:
+            self.selectedLO = self.combo_customlo.currentText()
+            self.treeFinalView.setEnabled(True)
+            self.saveToLO.setEnabled(True)
+            self.btnDeleteLO.setEnabled(True)
+            self.button_EnableDisableMods.setEnabled(True)
+
         if self.selectedProfile == None:
             QMessageBox.about(self, "Error", "Please select a profile")
             self.selectedLO = None
             return self.populate_LO()
 
+        if self.selectedLO == None:
+            return False
 
         if str(self.combo_customlo.currentText()) != str("--Chose a custom LO--"):
 
-            # Save current text to a string:
-            self.selectedLO = str(self.combo_customlo.currentText())
-            self.treeFinalView.setEnabled(True)
+            try:
+                self.selectedLO = str(self.combo_customlo.currentText())
 
-            file = os.path.join(current_path, self.dirCLO, self.selectedLO)
+                file = os.path.join(current_path, self.dirCLO, self.selectedLO)
 
-            # if it's empty don't bother doing anything:
-            if os.stat(file).st_size != 0:
-                # Otherwise reorder the list:
-                self.reorderInstalledFinal(file)
+                if os.stat(file).st_size != 0:
+                    # Otherwise reorder the list:
+                    self.reorderInstalledFinal(file)
+                self.treeFinalView.setEnabled(True)
 
-            print("Currently Selected Load Order is " + self.selectedLO)
+                self.config('save','lo_selected',str(self.selectedLO))
+                print("Currently Selected Load Order is " + self.selectedLO)
+            except FileNotFoundError:
+                QMessageBox.about(self, "Error", "File was removed")
+                return self.populate_LO()
+
         else:
             self.selectedLO = None
+            return self.populate_LO()
 
 
 
@@ -570,12 +681,14 @@ class ModManager(ModManagerUI.Ui_MainWindow, QtWidgets.QMainWindow):
 
     # Populates LOs
     def populate_LO(self):
-
         clods = next(os.walk(os.path.join(current_path, self.dirCLO)))[2]
-        # Clean list
-        self.combo_customlo.clear()
 
-        # Add a blank by default
+        self.combo_customlo.clear()
+        self.treeFinalView.setEnabled(False)
+        self.saveToLO.setEnabled(False)
+        self.btnDeleteLO.setEnabled(False)
+        self.button_EnableDisableMods.setEnabled(False)
+
         if len(os.listdir(os.path.join(current_path, self.dirCLO)))==0:
             items = QtWidgets.QComboBox.addItem(self.combo_customlo, str("--Create a custom LO--"))
         else:
