@@ -25,3 +25,10 @@ tools/dbg-build.zip
 testing/parser2.py
 testing/modsettings_writer_finished.py
 testwrite.xml
+gold.log
+NativeModLoader.log
+network.log
+__pycache__/runner.cpython-37.pyc
+ui/ModManagerUI.py
+ui/ModManagerUI.py
+ui/__pycache__/ModManagerUI.cpython-37.pyc
