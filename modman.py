@@ -44,7 +44,6 @@ FUNCTIONAL BUT NOT FINISHED - NEEDS SHORTCUTS VIA EVENT LISTENERS
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 uifile = os.path.join(current_path,"ui\ModManager.ui")
-template_file = os.path.join(current_path,"template.xml")
 
 
 class ModManager(QtWidgets.QMainWindow):
@@ -82,11 +81,6 @@ class ModManager(QtWidgets.QMainWindow):
         self.objList = []
         self.nomList = []
         self.lstItemsBeingDragged = []
-        #self.Welcome.grabKeyboard()
-
-        #print(str(self.treeFinalView.mimeTypes()))
-        # array = self.treeFinalView.dropEvent.data('application/x-qabstractitemmodeldatalist')
-
 
 
     def eventFilter(self, o, e):
@@ -1038,7 +1032,11 @@ class ModManager(QtWidgets.QMainWindow):
 
     # File parser for saving lsx/xml files
     def modsettingsWriter(self,file):
-        tree = et.parse(template_file)
+        if self.tickboxJoining.isChecked():
+            tree = et.parse(os.path.join(current_path, "userdata/templates/templateJoining.xml"))
+        else:
+            tree = et.parse(os.path.join(current_path, "userdata/templates/template.xml"))
+
         root = tree.getroot()
         # Create a Module element as object:
         def new_module(uuid):
