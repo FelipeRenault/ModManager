@@ -1,18 +1,11 @@
-import sys
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtCore import QFile
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QDropEvent
-from PyQt5.QtWidgets import QTableWidget, QAbstractItemView, QTableWidgetItem, QWidget, QHBoxLayout, QApplication, QListWidget, QMessageBox
-from PyQt5 import QtWidgets, uic, QtCore, QtGui
-import os
-import subprocess
+import sys,os,io
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QAbstractItemView, QApplication, QMessageBox
+from PyQt5 import QtWidgets, uic, QtCore
 from lxml import etree as et
 import lxml.etree
 import lxml.builder
-from glob import glob
 from configparser import ConfigParser
-import io
 import bs4 as bs
 import lz4.block
 from struct import *
@@ -21,30 +14,36 @@ import time
 start = time.time()
 
 '''
-Core function of the whole application:
+=====================
+Ideas & Observations
+=====================
 
-1. Get information from all installed mods
-DONE
+Steam workshop downloader:
+Instead of just reading from the mods folder, I could also read from the workshop folder. This would allow me to add the folder numbers to the dictionary. Potentially allowing me to include a downloader & update checker.
 
-2. Display them in a tree widget
-DONE
+To create a downloader I'll need:
+- The user to download steamcmd and place it in a specified folder.
+- A steamcmd wrapper
+- cmd:
+steamcmd +login anonymous +force_install_dir "C:\steamcmd\testdl" +workshop_download_item 435150 1499438487 +quit
+435150 = appid
+1499438487 = published field
 
-3. Create, save & load custom load orders as xml
-FUNCTIONAL BUT NOT FINISHED - AUTO POPULATE WHEN CHANGED | Add update btn
-
-4.Reordering via drag and drop. Including multi select.
-FUNCTIONAL BUT NOT FINISHED - NEEDS SHORTCUTS VIA EVENT LISTENERS
-
-5. Allow the user to add custom groups
-{WIP}
-
-6. Multi-threading support for better GUI responsiveness
+Additionally one an use steamctl to fetch file information:
+steamctl webapi call --format json_line ISteamRemoteStorage.GetPublishedFileDetails itemcount=1 publishedfileids[0]=1499438487
 
 '''
 
-current_path = os.path.dirname(os.path.realpath(__file__))
-uifile = os.path.join(current_path,"ui\ModManager.ui")
+# Save current path of script or executable to var:
+def getCurrentPath():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    else:
+        return os.path.dirname(os.path.abspath(__file__))
+current_path = getCurrentPath()
 
+# Save current path of UI file to var:
+uifile = os.path.join(current_path,"ui\ModManager.ui")
 
 class ModManager(QtWidgets.QMainWindow):
 
@@ -64,10 +63,7 @@ class ModManager(QtWidgets.QMainWindow):
         self.btnPrintSelected_2.setHidden(True)
         self.btnAddGroup.setHidden(True)
 
-
         self.config('load')
-        self.autoInsertGameFolder()
-        self.autoInsertLarianFolder()
 
         self.cmdInput.setPlaceholderText(str(self.report))
 
@@ -78,51 +74,68 @@ class ModManager(QtWidgets.QMainWindow):
         self.test = None
         self.test2 = None
 
-        self.objList = []
-        self.nomList = []
-        self.lstItemsBeingDragged = []
 
 
+    # Used for modifying events:
     def eventFilter(self, o, e):
-        #self.treeFinalView.itemSelectionChanged.connect(self.messageyey)
+        '''
+        This function is for overriding events.
 
-        # I think I'm going to have to make use of the QtCore.QEvent.ChildAdd function in order to save
-        # the selection whilst dragging
+        With regards to treeFinalView (The widget containing the Mod list):
+        The default Drag/Drop behaviour is strange. It would scramble the order of dropped selected items and this issue became increasingly for larger selections. This is probably due to the fact that Qt doesn't actually 'move' items when dragging and dropping. Instead, the drag event ADDS the selected items as a temporary object & the drop event REMOVES any objects with the same ID from the widget and adds them at the selected position. Eh, it's a mess. Anyway. To circumvents the issue I created two event listeners: one for dragging, one for dropping. I also created two lists (technically a list of dictionaries). One of them iterates over every item in the widget, the other iterates over every item held by the drag event. I then filter the first list (which has the preserved order), using the second list to remove any object that is not being dragged from the first. I then used the drop event listener to rewrite the data of each object in accordance with the first list. Since the drop event already handles the removal of items I don't need to worry about it.
+        '''
+
+        # if selected object is the modlist widget
         if (o is self.treeFinalView):
             # print("Object: {} called Event: {}".format(o,e.type())) # used for finding calls
 
+            # if event type is == 'ChildAdded
             if e.type() == QtCore.QEvent.ChildAdded:
-                # Create a function that makes an ordered dictionary of items
-                # currentViewDictionary
                 try:
+                    # Save the data contained in the modlist to a list of dictionaries
                     d1 = self.getFinalAsDct()
 
+                    # Prevent potential None TypeError:
                     if (len(self.nomList) != 0) and len(self.objList) != 0:
-                        self.nomList = []
-                        self.objList = []
+                        self.nomList = [] # Placeholder for a list of names (Used to preserve order)
+                        self.objList = [] # Placeholder for a list of objects (Used later on)
 
-                    for currentObject in self.treeFinalView.selectedItems():
+                    # For each item that's selected: Append the name / object to the respective list
+                    for i in self.treeFinalView.selectedItems():
 
-                        currentObjectName = currentObject.text(1)
-                        self.objList.append(currentObject)
+                        currentObjectName = i.text(1)
+                        self.objList.append(i)
                         self.nomList.append(currentObjectName)
 
+                    # Create a reordered dictionary using the list of names to preserve the order:
                     self.lstItemsBeingDragged = [name for name in d1 if name["Name"] in self.nomList]
+
+                # This should never happen:
                 except Exception as e:
                     return print(e)
 
-
-                print("Before: " + str(len(self.objList)) + "/" + str((len(self.getFinalAsDct())+1)))
+                # During Drag event: Prints # of objects selected / # of items in the list
+                print("Moving: " + str(len(self.objList)) + " of " + str((len(self.getFinalAsDct())+1)) + " Mods")
 
             if (e.type() == QtCore.QEvent.ChildRemoved):
-                print("After: " + str(len(self.objList)) + "/" + str((len(self.getFinalAsDct())+1)))
 
+                # App will crash if user tries to drag/drop everything in the mod list, so:
                 if len(self.objList) == (len(self.getFinalAsDct())+1):
                     return False
                 try:
+                    # findBase returns the topmost selected object in the mod list
                     findBase = self.treeFinalView.findItems(str(self.nomList[0]),Qt.MatchExactly,1)[0]
+
+                    # Fixes default behavior so that the widget focusses scrollbar position @ drop location.
+                    # Without this, the scrollbar will snap back to its position prior to the drop
                     self.treeFinalView.scrollToItem(findBase,QAbstractItemView.PositionAtCenter)
+
+                    # Since we're iterating over a list of dictionaries:
+                    # i is the iterator: 1, 2, 3 etc
+                    # obj is the object itself. Remember: objList is a list of QTreeWidgetItem objects
                     for i,obj in enumerate(self.objList):
+
+                        # Function that rewrites data to the object:
                         def rewriteItem(i,l,obj):
                             dct = l[i]
                             items = obj
@@ -158,15 +171,16 @@ class ModManager(QtWidgets.QMainWindow):
                                 items.setText(5,str(dct["Folder"]))
                             else:
                                 items.setText(5,str('NONE'))
+
                         rewriteItem(i,self.lstItemsBeingDragged,obj)
                         obj.setSelected(True)
 
                 except IndexError:
                     return False
-
-
         return False
 
+    # Testing keyPressEvent override. Doesn't work with certain widgets. Needs research
+    # NOTE: UNFINISHED / TESTING
     def keyPressEvent(self,keyEvent):
         if keyEvent.key()==Qt.Key_Escape:
             self.close()
@@ -174,6 +188,7 @@ class ModManager(QtWidgets.QMainWindow):
             print("Yey")
         return super().keyPressEvent(keyEvent)
 
+    # Connect buttons to functions
     def _connectSignals(self):
         self.button_UserFolder.clicked.connect(self.select_UserFolder)
         self.btnCreateLO.clicked.connect(self.fnCreateLO)
@@ -190,11 +205,10 @@ class ModManager(QtWidgets.QMainWindow):
         self.btnOpenGameFolder.clicked.connect(self.fnOpenGameFolder)
         self.combo_customlo.activated[str].connect(self.getCLOD)
         self.button_EnableDisableMods.clicked.connect(self.fnEnableDisable)
-        self.btnPrintSelected_2.clicked.connect(self.fnPrintSelected)
         self.btnAutoLoadOrder.clicked.connect(self.fnAutoLoadOrder)
 
+    # Manage Header (column) names. Will return to this if and when I decide to add/improve features
     def headerchanges(self):
-
         headerchange = self.treeFinalView.header()
         headerchange.setVisible(True)
         headerchange.resizeSection(0,25)
@@ -207,14 +221,54 @@ class ModManager(QtWidgets.QMainWindow):
         self.treeFinalView.setColumnHidden(3,1)
         self.treeFinalView.setColumnHidden(2,0)
 
+    # All initial/placeholder/setup variables / functions
     def initialvars(self):
 
+        # if guess succeeds, make relavent changes:
+        def autoInsertGameFolder(self):
+            if self.gamefolder==None:
+                try:
+                    for dirs in os.listdir(self.game_folder):
+
+                        if 'bin' or 'DefEd' in os.path.isdir(os.path.join(self.game_folder, dirs)):
+                            self.textbox_GameFolder.setText(self.game_folder)
+                            self.gamefolder = self.textbox_GameFolder.toPlainText()
+                            self.config('save','gamefolder',str(self.textbox_GameFolder.toPlainText()))
+                            self.button_UserFolder.setEnabled(True)
+                except FileNotFoundError:
+                    return
+
+        def autoInsertLarianFolder(self):
+            if self.larfolder==None:
+                try:
+                    for dirs in os.listdir(self.lar_folder):
+
+                        if 'Divinity Original Sin 2' or 'Divinity Original Sin 2 Definitive Edition' in os.path.isdir(os.path.join(self.lar_folder, dirs)):
+
+                            self.textbox_UserFolder.setText(self.lar_folder)
+
+                            self.larfolder = self.textbox_UserFolder.toPlainText()
+                            self.config('save','larfolder',str(self.textbox_UserFolder.toPlainText()))
+
+                            self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\PlayerProfiles\\")
+
+                            self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\Mods\\")
+
+                            if not os.path.exists(self.dirCLO):
+                                os.makedirs(self.dirCLO)
+
+                            self.radio_DE.setEnabled(True)
+                except FileNotFoundError:
+                    return
+
+        # Try to find Larian folder
         def guessLarianFolder():
             try:
                 self.lar_folder = os.path.join(os.environ['USERPROFILE'], "Documents\Larian Studios")
             except:
                 self.lar_folder = None
 
+        # Try to find game folder
         def guessGameFolder():
             try:
                 self.game_folder = os.path.join(os.environ['PROGRAMFILES(X86)'], "Steam\steamapps\common\Divinity Original Sin 2")
@@ -223,15 +277,25 @@ class ModManager(QtWidgets.QMainWindow):
                 self.game_folder = None
                 self.workshop_folder = None
 
-        guessLarianFolder()
-        guessGameFolder()
+            if self.gamefolder==None:
+                try:
+                    for dirs in os.listdir(self.game_folder):
+
+                        if 'bin' or 'DefEd' in os.path.isdir(os.path.join(self.game_folder, dirs)):
+                            self.textbox_GameFolder.setText(self.game_folder)
+                            self.gamefolder = self.textbox_GameFolder.toPlainText()
+                            self.config('save','gamefolder',str(self.textbox_GameFolder.toPlainText()))
+                            self.button_UserFolder.setEnabled(True)
+                except FileNotFoundError:
+                    return
+
         self.report = None
         self.gamefolder = None # PATH 2 GAME FOLDER
         self.larfolder = None # PATH TO LARIAN FOLDER
         self.path_mods = None # PATH TO MODS FOLDER
         self.path_profiles = None # PATH TO PROFILES FOLDER
         self.path_exe = None # PATH TO EXE
-        self.profiles = None # ?
+        self.profiles = None # LIST OF PROFILE NAMES
         self.selectedProfile = None # VALUE OF THE CURRENTLY SELECTED PROFILE
         self.selectedLO = None # VALUE OF THE CURRENTLY SELECTED LOAD ORDER
         self.data_list = None # DICTIONARY OF MODS
@@ -240,39 +304,15 @@ class ModManager(QtWidgets.QMainWindow):
         self.final_dct = self.getFinalAsDct() # DICTIONARY OF DATA DISPLAYED IN LIST INCLUDING ENABLE STATUS
         self.sorted_list = None # SORTED data_list
         self.dirCLO = "userdata\CLOD"
-        self.busy = False # USED FOR PROCESS MANAGEMENT AKA IMPATIENT RETARD CONTROL
 
-    def autoInsertGameFolder(self):
-        if self.gamefolder==None:
-            for dirs in os.listdir(self.game_folder):
+        self.objList = []
+        self.nomList = []
+        self.lstItemsBeingDragged = []
 
-                if 'bin' or 'DefEd' in os.path.isdir(os.path.join(self.game_folder, dirs)):
-                    self.textbox_GameFolder.setText(self.game_folder)
-                    self.gamefolder = self.textbox_GameFolder.toPlainText()
-                    self.config('save','gamefolder',str(self.textbox_GameFolder.toPlainText()))
-                    self.button_UserFolder.setEnabled(True)
+        guessLarianFolder()
+        guessGameFolder()
 
-    def autoInsertLarianFolder(self):
-        if self.larfolder==None:
-            for dirs in os.listdir(self.lar_folder):
-
-                if 'Divinity Original Sin 2' or 'Divinity Original Sin 2 Definitive Edition' in os.path.isdir(os.path.join(self.lar_folder, dirs)):
-
-                    self.textbox_UserFolder.setText(self.lar_folder)
-
-                    self.larfolder = self.textbox_UserFolder.toPlainText()
-                    self.config('save','larfolder',str(self.textbox_UserFolder.toPlainText()))
-
-                    self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\PlayerProfiles\\")
-
-                    self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2 Definitive Edition\\Mods\\")
-
-                    if not os.path.exists(self.dirCLO):
-                        os.makedirs(self.dirCLO)
-
-                    self.radio_Classic.setEnabled(True)
-                    self.radio_DE.setEnabled(True)
-
+    # Trying to launch the game without setting vars throws error messages:
     def idiotchecker(self):
         if not self.selectedProfile:
             return QMessageBox.about(self, "Error", "Please select a profile")
@@ -288,7 +328,50 @@ class ModManager(QtWidgets.QMainWindow):
 
 
 # ========================= BUTTON FUNCTIONS
+
+    # Function for button: Auto Load Order
+    # NOTE: UNFINISHED
     def fnAutoLoadOrder(self):
+        '''
+        I'm not sure exactly how I wish to proceed with this.
+
+        Potential approaches:
+        1: Download all 'targetted' mods, Create a template xml & use that (least effort, fastest implimentation)
+        2: Download all mods, modify my functions to pull all data from them and write them to a database file, create a simple flag system (ie class mod, shared library etc) and assign 'targetted' mods an int value for sorting.
+
+        Explanation of 'targetted' mods.
+        In essence, there exists only a few mods who's position in the LO are vital. One can ultimately break down a healthy LO structure like this:
+
+        |-----------
+        | CATEGORY 1: Shared libs/overhauls/Init vital mods
+        |-----------
+        | CATEGORY 2: Class mods
+        |-----------
+        |
+        |
+        | CATEGORY 3: Stuff
+        |
+        |
+        |-----------
+        | CATEGORY 4: Overrides/fixers/patches/situational
+        |-----------
+
+        So the smart approach would be to use a primary, secondary & tertiary sorting method.
+
+        Handling the primary sort - Identify & Categorise mods
+
+        CATEGORY 1 Examples: (Majoras/Leaderlib/Shared libs etc)
+        CATEGORY 2 Examples: (Helaene, Odinblade, Hep etc)
+        CATEGORY 4 Examples: (Divine war comp patch)
+        CATEGORY 3 is just the dump zone. If a mod isn't recognised as belonging to 1,2 or 4, it belongs in 3
+
+        Handling Secondary sort - This will be done by author
+
+        Handling tertiary sort - This will be done by number
+
+        Ultimately, the purpose of this feature is to save as much time as possible & to provide a starting point for people to then quickly tweak what they want.
+
+        '''
         # Create a list of dictionaries then create a new autosort key
         lst1 = self.mods_dictionary(self.path_mods)
         for i in lst1:
@@ -302,9 +385,6 @@ class ModManager(QtWidgets.QMainWindow):
         # filter lst2 based off lst1
 
         #
-        pass
-
-    def fnPrintSelected(self):
         pass
 
     def fnEnableDisable(self):
@@ -413,6 +493,7 @@ class ModManager(QtWidgets.QMainWindow):
         self.idiotchecker()
 
         if self.treeFinalView.isEnabled():
+            self.modsettingsWriter(os.path.join(current_path, self.dirCLO,self.selectedLO))
             self.modsettingsWriter(os.path.join(self.path_profiles,self.selectedProfile,"modsettings.lsx"))
             return os.startfile(self.path_exe)
         else:
@@ -439,12 +520,13 @@ class ModManager(QtWidgets.QMainWindow):
         if operation == 'load':
             if config['LastSessionData']['gamefolder'] != 'None':
                 self.gamefolder = config['LastSessionData']['gamefolder']
+                self.textbox_GameFolder.setText(self.gamefolder)
                 self.button_UserFolder.setEnabled(True)
 
             if config['LastSessionData']['larfolder'] != 'None':
                 self.larfolder = config['LastSessionData']['larfolder']
+                self.textbox_UserFolder.setText(self.larfolder)
                 self.radio_DE.setEnabled(True)
-                self.radio_Classic.setEnabled(True)
 
             if config['LastSessionData']['edition'] != 'None':
                 if config['LastSessionData']['edition'] == 'DE':
@@ -487,7 +569,7 @@ class ModManager(QtWidgets.QMainWindow):
             if str('bin') in temp_list and str('Classic') in temp_list or str('DefEd') in temp_list:
                 self.textbox_GameFolder.setText(game_path)
                 self.gamefolder = game_path
-                self.config('save','larfolder',str(game_path))
+                self.config('save','gamefolder',str(self.gamefolder))
                 self.button_UserFolder.setEnabled(True)
                 return self.gamefolder
             else:
@@ -519,7 +601,6 @@ class ModManager(QtWidgets.QMainWindow):
                 self.textbox_UserFolder.setText(user_path)
                 self.larfolder = user_path
                 self.config('save','larfolder',str(user_path))
-                self.radio_Classic.setEnabled(True)
                 self.larfolder
             else:
                 QMessageBox.about(self, "Error", "These are not the folders you're looking for")
@@ -527,7 +608,6 @@ class ModManager(QtWidgets.QMainWindow):
 
         if not user_path:
             return False
-
 
     # DE / Classic radio button handler
     def select_Mode(self,b):
@@ -549,19 +629,7 @@ class ModManager(QtWidgets.QMainWindow):
 
         if b.text() == "Classic":
             if b.isChecked() == True:
-                self.path_profiles = os.path.join(self.larfolder, "Divinity Original Sin 2\\PlayerProfiles\\")
-                self.path_mods = os.path.join(self.larfolder, "Divinity Original Sin 2\\Mods\\")
-                self.path_exe = os.path.join(self.gamefolder, "Classic\\EoCApp.exe")
-
-                self.profiles = self.lst_profiles(self.path_profiles)
-                self.data_list = self.mods_dictionary(self.path_mods)[0]
-
-                self.comboBox_Profiles.setEnabled(True)
-                self.populate_profiles()
-                self.populateInstalledFinal(self.data_list)
-                self.populate_LO()
-                self.button_Launch.setText("Launch Classic")
-                self.config('save','edition',str("Classic"))
+                pass
 
     # Add Group btn fn
     # NOTE: UNFINISHED
@@ -655,10 +723,6 @@ class ModManager(QtWidgets.QMainWindow):
         else:
             self.selectedLO = None
             return self.populate_LO()
-
-
-
-
 
 # ========================= POPULATE FUNCTIONS
     # Populates profile list
@@ -846,7 +910,6 @@ class ModManager(QtWidgets.QMainWindow):
         else:
             return
 
-
 # ========================= READ/WRITE/LIST/PARSE FUNCTIONS
     # returns the foldernames in playerprofiles as a list
     def lst_profiles(self,path):
@@ -1033,7 +1096,7 @@ class ModManager(QtWidgets.QMainWindow):
     # File parser for saving lsx/xml files
     def modsettingsWriter(self,file):
         if self.tickboxJoining.isChecked():
-            tree = et.parse(os.path.join(current_path, "userdata/templates/templateJoining.xml"))
+            tree = et.parse(os.path.join(current_path, "userdata/templates/templateDebug.xml"))
         else:
             tree = et.parse(os.path.join(current_path, "userdata/templates/template.xml"))
 
@@ -1128,10 +1191,9 @@ class ModManager(QtWidgets.QMainWindow):
         tree = et.parse(file, parser)
         tree.write(file, encoding='utf-8',pretty_print=True,xml_declaration=True)
 
-
+# Start App:
 if __name__=='__main__':
     app = QtWidgets.QApplication(sys.argv)
-
     qt_app = ModManager()
     qt_app.show()
     app.exec_()

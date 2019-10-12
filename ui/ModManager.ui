@@ -775,6 +775,9 @@ p, li { white-space: pre-wrap; }
                   </item>
                   <item>
                    <widget class="QPushButton" name="btnOpenWorkshopFolder">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
                     <property name="text">
                      <string>Open Workshop Folder</string>
                     </property>
@@ -1035,6 +1038,119 @@ p, li { white-space: pre-wrap; }
           </layout>
          </widget>
         </widget>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>FAQ / Guide</string>
+         </attribute>
+         <widget class="QWidget" name="verticalLayoutWidget_2">
+          <property name="geometry">
+           <rect>
+            <x>9</x>
+            <y>9</y>
+            <width>1011</width>
+            <height>451</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QPlainTextEdit" name="textboxFAQ">
+             <property name="plainText">
+              <string>- Currently only DE is supported</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>To Do / Future ideas / Bugs</string>
+         </attribute>
+         <widget class="QWidget" name="verticalLayoutWidget_4">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>1011</width>
+            <height>451</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QPlainTextEdit" name="textboxTodo">
+             <property name="plainText">
+              <string>My initial goals were as follows:
+
+COMPLETED:
+1. Get information from all installed mods
+2. Display them in a tree widget
+3. Create, save &amp; load custom load orders as xml
+4. Reordering via drag and drop. Including multi select.
+
+I'm unhappy with the usability of the load order widget &amp; intend to make it as easy to use as possible. Next task: Add mouse event listners for scroll up &amp; down whilst holding a selection. 
+
+Status:
+Functional &amp; ultimately complete. 
+Improve visual feedback 
+Could do with keyboard shortcuts (IE space = enable/disable) ~ Solution is non-trivial. Requires rewriting QTreeWidget event listeners
+Needs more buttons: Move selection up/down, seperate Enable/Disable buttons etc.
+
+Idea / feature dump:
+- Automatically reorder mods 
+- Automatically save custom LO when launch clicked ~ trivial
+
+Maybe:
+- Allow the user to add custom groups
+- Multi-threading support for better GUI responsiveness
+- Create settings window. Include: game folder, larian folder &amp; edition. This will increase real estate on the main app.
+- Clean up code to &amp; reduce dependancies to reduce size &amp; increase performance
+
+Unlikely:
+- Custom character preset maker/editor for story, arena &amp; gm
+- GUI Overhaul. Similar format to Xcom2 unofficial launcher
+- Writer overhaul. Dump all mod information into a database and perform manipulations on that
+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPlainTextEdit" name="textboxBugs">
+             <property name="plainText">
+              <string>- Workshop button fix
+
+- Improve experimental feature (will require me to make a custom placeholder mod ~ needs lots more testing/debugging/research for very little return. It doesn't speed up the loading process but it does delay it. Useful for changing profiles but eventually I'll write code to decrypt, write &amp; encrypt the playersettings.lsb so I can force the game to launch with the profile selected.
+
+</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -1058,7 +1174,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QCheckBox" name="tickboxJoining">
           <property name="text">
-           <string>If you're joining a multiplayer game tick this box. If you're hosting or playing a single player campaign keep it unchecked</string>
+           <string>[EXPERIMENTAL]: Allows load to the main menu instantly no matter how many mods you have enabled. This is for testing/debugging purposes only. DO NOT use for play</string>
           </property>
          </widget>
         </item>
