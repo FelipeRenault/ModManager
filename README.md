@@ -7,3 +7,6 @@ D:OS2 Mod manager Alpha - version 1.0
 If you appreciate my work / music & you're in a particularly giving mood then feel free to support me on:
 
 [![Buy Coffee](https://github.com/Rykarix/ModManager/blob/master/.github/coffee.png)](https://ko-fi.com/rykari)
+
+# Disclaimer
+To any and all good python programmers out there, sorry for the messy spaghetti code. This is the first app I've ever written so please be nice.
