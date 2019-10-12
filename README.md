@@ -1,5 +1,4 @@
-# ModManager
-D:OS2 Mod manager Alpha - version 1.0
+![Logo](https://github.com/Rykarix/ModManager/blob/master/.github/HatchfulExport-All/facebook_cover_photo_1.png)
 
 [![Download](https://github.com/Rykarix/ModManager/blob/master/.github/download.png)](https://github.com/Rykarix/ModManager/releases) [![Bug Report](https://github.com/Rykarix/ModManager/blob/master/.github/bugreport.png)](https://github.com/Rykarix/ModManager/issues/new/choose) [![Tracker](https://github.com/Rykarix/ModManager/blob/master/.github/tracker.png)](https://github.com/Rykarix/ModManager/projects/1)
 
