@@ -1,14 +1,16 @@
-![Logo](https://github.com/Rykarix/ModManager/blob/master/.github/HatchfulExport-All/facebook_cover_photo_1.png)
 <p align="center">
-<a href="https://github.com/Rykarix/ModManager/releases">
-<img src="https://github.com/Rykarix/ModManager/blob/master/.github/download.png" width="225" height="50">
-</a>
-<a href="https://github.com/Rykarix/ModManager/issues/new/choose">
-<img src="https://github.com/Rykarix/ModManager/blob/master/.github/bug.png" width="225" height="50">
-</a>
-<a href="https://github.com/Rykarix/ModManager/projects/1">
-<img src="https://github.com/Rykarix/ModManager/blob/master/.github/tracker.png" width="225" height="50">
-</a>
+  <img src="https://github.com/Rykarix/ModManager/blob/master/.github/Logo1.png">
+</p>
+<p align="center">
+  <a href="https://github.com/Rykarix/ModManager/releases">
+  <img src="https://github.com/Rykarix/ModManager/blob/master/.github/download.png" width="225" height="50" style="padding:10px" hspace="20">
+  </a>
+  <a href="https://github.com/Rykarix/ModManager/issues/new/choose">
+  <img src="https://github.com/Rykarix/ModManager/blob/master/.github/bug.png" width="225" height="50" style="padding:10px" hspace="20">
+  </a>
+  <a href="https://github.com/Rykarix/ModManager/projects/1">
+  <img src="https://github.com/Rykarix/ModManager/blob/master/.github/tracker.png" width="225" height="50" style="padding:10px" hspace="20">
+  </a>
 </p>
 
 # Support 
